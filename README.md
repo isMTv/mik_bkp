@@ -1,5 +1,5 @@
 # mik_bkp
-Simple bash script backup to mikrotik for linux server.
+Simple bash script backup for mikrotik to linux server.
 * Simultaneous backup multiple hosts (Parameter - EXEC_PARALLEL_HOSTS);
 * Ability to create both a full backup and using .rsc files (Arguments for script - full_bkp or rsc_bkp);
 * The ability to specify the number of backups to store (Parameter - BACKUP_COUNT);
