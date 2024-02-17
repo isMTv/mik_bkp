@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ./mik_bkp full_bkp
-ROUTERS=( 172.16.1.1 172.16.2.1 172.16.3.1 172.17.4.1 172.17.5.1 )
+ROUTERS=( 172.16.5.1 172.16.5.3 172.16.5.4 172.17.5.1 )
 WHAT_BKP="${1:?}" # full_bkp, rsc_bkp;
 EXEC_PARALLEL_HOSTS="15"
 DELAY="15s"
-PROJECT="core"
+PROJECT="int.lan"
 BACKUP_COUNT="2" # count + 1 (new bkp)
-LOGIN="username"
-PRIV_KEY="/root/.ssh/username_rsa"
+LOGIN="ssh-man"
+PRIV_KEY="/root/.ssh/ssh-man_ed25519"
 
 # - #
 BACKUP_DIR="$(dirname "$(readlink -f "$0")")/$PROJECT"
@@ -52,13 +52,13 @@ app_scp () {
 # What Backup CMD;
 what_bkp () {
     if [ "$WHAT_BKP" = "full_bkp" ]; then
-        bkp_name="${r}@${board_name}-(${arc_name})-v${cur_fw}.backup"
+        bkp_name="${r}@${board_name}-${arc_name}-v${cur_fw}.backup"
         cmd_stage_1="/system backup save name=\"${bkp_name}\""
         cmd_stage_2="${bkp_name}"
         cmd_stage_3="/file remove \"${bkp_name}\""
     elif [ "$WHAT_BKP" = "rsc_bkp" ]; then
-        bkp_name="${r}@${board_name}-(${arc_name})-v${cur_fw}.rsc"
-        cmd_stage_1="/export compact file=\"${bkp_name}\""
+        bkp_name="${r}@${board_name}-${arc_name}-v${cur_fw}.rsc"
+        cmd_stage_1="/export compact show-sensitive file=\"${bkp_name}\""
         cmd_stage_2="${bkp_name}"
         cmd_stage_3="/file remove \"${bkp_name}\""
     fi
@@ -77,6 +77,7 @@ bkp () {
             err_app_ssh="false" ; cur_stage="create_bkp" ; logger "[OK] - Host ${r}!"
             if app_scp "$FULL_DIR"; then
                 err_app_scp="false" ; cur_stage="download_bkp" ; logger "[OK] - Host ${r}!"
+                sleep 1
                 if app_ssh "${cmd_stage_3}"; then
                     err_app_ssh="false" ; cur_stage="remove_bkp" ; logger "[OK] - Host ${r}!"
                 else
