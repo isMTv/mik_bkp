@@ -12,33 +12,36 @@ Simple bash script backup for mikrotik to linux server.
 
 Backup example:
 .
-├── core
-│   ├── 2022
-│   │   └── 03
-│   │       └── 10
-│   │           ├── 172.16.1.1@CRS309-1G-8S+-(arm)-v7.2rc3.backup
-│   │           ├── 172.16.2.1@hEX-(mmips)-v7.1.3.backup
-│   │           ├── 172.16.3.1@cAP-(arm)-v7.1.3.backup
-│   │           ├── 172.17.4.1@hEX-(mmips)-v7.1.3.backup
-│   │           └── 172.17.5.1@hAP-(smips)-v7.1.3.backup
-│   └── core.log
+├── int.lan
+│   ├── 2024
+│   │   └── 02
+│   │       └── 18
+│   │           ├── 172.16.5.1@CRS309-1G-8S+-arm-v7.12.1.backup
+│   │           ├── 172.16.5.1@CRS309-1G-8S+-arm-v7.12.1.rsc
+│   │           ├── 172.16.5.3@CCR2004-16G-2S+-arm64-v7.12.1.backup
+│   │           ├── 172.16.5.3@CCR2004-16G-2S+-arm64-v7.12.1.rsc
+│   │           ├── 172.16.5.4@hAP-arm64-v7.13.4.backup
+│   │           ├── 172.16.5.4@hAP-arm64-v7.13.4.rsc
+│   │           ├── 172.17.5.1@hAP-arm64-v7.13.1.backup
+│   │           └── 172.17.5.1@hAP-arm64-v7.13.1.rsc
+│   └── int.lan.log
 └── mik_bkp.sh
 ```
 
 ### Create key mik_rsa:
 ```
 # cd ~/.ssh/
-# ssh-keygen -t rsa -b 2048
-- /root/.ssh/mik_rsa
-id_rsa [mik_rsa] - secret key (for the host from which we are connecting)
-id_rsa.pub [mik_rsa.pub] - public key (for the host to which we are connecting)
+# # ssh-keygen -t ed25519 -f ssh-man_ed25519 -C ssh-management
+- /root/.ssh/ssh-man_ed25519
+[ssh-man_ed25519] - secret key (for the host from which we are connecting)
+[ssh-man_ed25519.pub] - public key (for the host to which we are connecting)
 ```
 
 ### We specify a lot of hosts through a space:
 ```
 # nano ~/.ssh/config
-Host 172.16.1.1 172.16.2.1 172.16.3.1 172.17.4.1 172.17.5.1
-IdentityFile ~/.ssh/mik_rsa
+Host 172.16.5.1 172.16.5.3 172.16.5.4 172.17.5.1
+IdentityFile ~/.ssh/ssh-man_ed25519
 # chmod 600 ~/.ssh/config
 # service sshd restart
 ```
