@@ -28,10 +28,11 @@ Backup example:
 └── mik_bkp.sh
 ```
 
-### Create key mik_rsa:
+### Create key ed25519 or rsa:
 ```
 # cd ~/.ssh/
-# # ssh-keygen -t ed25519 -f ssh-man_ed25519 -C ssh-management
+# ssh-keygen -t ed25519 -f ssh-man_ed25519 -C ssh-management
+# ssh-keygen -t rsa -b 2048 -f ssh-man_rsa -C ssh-management
 - /root/.ssh/ssh-man_ed25519
 [ssh-man_ed25519] - secret key (for the host from which we are connecting)
 [ssh-man_ed25519.pub] - public key (for the host to which we are connecting)
